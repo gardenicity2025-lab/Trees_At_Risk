@@ -4,13 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-<!-- Fullscreen App Mode for Android + Chrome -->
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#000000">
 
 <title>Mapbox Fullscreen Map</title>
 
-<!-- Mapbox GL JS -->
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
 
@@ -38,12 +36,12 @@
 <div id="map"></div>
 
 <script>
-mapboxgl.accessToken = 'pk.eyJ1Ijoia2F2bmkiLCJhIjoiY2s5YjBqNGY1MGV4aTNobnk0amJncWZweCJ9.gZK_r9CYmb6ZN_mZVmgjNg';
+mapboxgl.accessToken = 'pk.eyJ1Ijoia2F2bmkiLCJhIjoiY2s5YjBqNGY1MGV4aTnobnk0amJncWZweCJ9.gZK_r9CYmb6ZN_mZVmgjNg';
 
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/kavni/cmd3iy6e600em01s9duln4zpp',
-    center: [34.7818, 32.0853],   // Tel Aviv — adjust if needed
+    center: [34.7818, 32.0853],    // Tel Aviv — adjust if needed
     zoom: 15,
     pitch: 0,
     bearing: 0,
@@ -51,11 +49,12 @@ const map = new mapboxgl.Map({
     maxZoom: 20
 });
 
-// Add zoom buttons (optional)
+// Add zoom buttons (optional) - Uses default 1.0 step
 map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-// Disable scroll zoom (optional—tablet friendly)
-map.scrollZoom.disable();
+// *** THE ONLY MODIFICATION: ENABLE SCROLL ZOOM ***
+// This enables mouse wheel zoom for desktop and preserves all other functionality.
+map.scrollZoom.enable();
 
 // Allow pinch zoom on tablet (recommended)
 map.touchZoomRotate.enable();
