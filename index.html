@@ -1,66 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-<!-- Fullscreen App Mode for Android + Chrome -->
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
 
-<title>Mapbox Fullscreen Map</title>
+    <title>Trees At Risk Map - Fullscreen Wrapper (Stable Scroll & 0.1 Granularity)</title>
 
-<!-- Mapbox GL JS -->
-<link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
 
-<style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        overflow: hidden; /* Prevent scrolling */
-        background: #000;
-    }
-    #map {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100vw;
-        height: 100vh;
-    }
-    /* Optional: remove Mapbox logo if your plan allows, otherwise required */
-    .mapboxgl-ctrl-logo { display:none !important; }
-</style>
-
+    <style>
+        /* Base styling for full-screen map container */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Prevent scrolling */
+            background: #000;
+        }
+        #map {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+        /* Optional: remove Mapbox logo if your plan allows, otherwise required */
+        .mapboxgl-ctrl-logo { 
+            display:none !important; 
+        }
+    </style>
 </head>
 <body>
 
 <div id="map"></div>
 
 <script>
-mapboxgl.accessToken = 'pk.eyJ1Ijoia2F2bmkiLCJhIjoiY2s5YjBqNGY1MGV4aTNobnk0amJncWZweCJ9.gZK_r9CYmb6ZN_mZVmgjNg';
+    // 1. Set the Mapbox Access Token
+    mapboxgl.accessToken = 'pk.eyJ1Ijoia2F2bmkiLCJhIjoiY2s5YjBqNGY1MGV4aTnobnk0amJncWZweCJ9.gZK_r9CYmb6ZN_mZVmgjNg';
 
-const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/kavni/cmd3iy6e600em01s9duln4zpp',
-    center: [34.7818, 32.0853],   // Tel Aviv — adjust if needed
-    zoom: 15,
-    pitch: 0,
-    bearing: 0,
-    minZoom: 10,
-    maxZoom: 20
-});
+    // Map Details for Trees At Risk Map:
+    const TREES_AT_RISK_STYLE = 'mapbox://styles/kavni/cmd3iy6e600em01s9duln4zpp';
+    // Center: [Longitude, Latitude] = [34.7818, 32.0853]
+    const INITIAL_CENTER = [34.7818, 32.0853]; 
+    const INITIAL_ZOOM = 15; 
+    
+    // Initialize the map
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: TREES_AT_RISK_STYLE,
+        center: INITIAL_CENTER,
+        zoom: INITIAL_ZOOM,
+        pitch: 0,
+        bearing: 0,
+        minZoom: 10,
+        maxZoom: 20
+    });
 
-// Add zoom buttons (optional)
-map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    // --- INTERACTIVITY ENHANCEMENTS (Proven Stable Logic) ---
 
-// Disable scroll zoom (optional—tablet friendly)
-map.scrollZoom.disable();
+    // 1. Enable Mouse Wheel Zoom (Scroll Zoom) for desktop interactivity.
+    map.scrollZoom.enable();
 
-// Allow pinch zoom on tablet (recommended)
-map.touchZoomRotate.enable();
+    // 2. Configure and Add Granular Zoom Controls
+    // Setting zoomStep to 0.1, which is the finest step Mapbox allows for the native control buttons.
+    const granularNav = new mapboxgl.NavigationControl({
+        visualizePitch: true,
+        zoomStep: 0.1 // Sets button granularity to 0.1
+    });
+    
+    // Add the controls to the top-right corner
+    map.addControl(granularNav, 'top-right');
+
+    // 3. Allow pinch zoom and rotation on touch devices (essential for tablet)
+    map.touchZoomRotate.enable();
+
 </script>
 
 </body>
 </html>
-
+```eof
