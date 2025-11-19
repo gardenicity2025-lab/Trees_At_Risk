@@ -4,13 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-<!-- Fullscreen App Mode for Android + Chrome -->
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#000000">
 
-<title>Mapbox Fullscreen Map</title>
+<title>Trees At Risk Map - Fullscreen Wrapper (0.1 Granularity)</title>
 
-<!-- Mapbox GL JS -->
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
 
@@ -38,12 +36,12 @@
 <div id="map"></div>
 
 <script>
-mapboxgl.accessToken = 'pk.eyJ1Ijoia2F2bmkiLCJhIjoiY2s5YjBqNGY1MGV4aTNobnk0amJncWZweCJ9.gZK_r9CYmb6ZN_mZVmgjNg';
+mapboxgl.accessToken = 'pk.eyJ1Ijoia2F2bmkiLCJhIjoiY2s5YjBqNGY1MGV4aTnobnk0amJncWZweCJ9.gZK_r9CYmb6ZN_mZVmgjNg';
 
 const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/kavni/cmd3iy6e600em01s9duln4zpp',
-    center: [34.7818, 32.0853],   // Tel Aviv — adjust if needed
+    style: 'mapbox://styles/kavni/cmd3iy6e600em01s9duln4zpp', // Trees At Risk Style
+    center: [34.7818, 32.0853],    // Tel Aviv
     zoom: 15,
     pitch: 0,
     bearing: 0,
@@ -51,15 +49,27 @@ const map = new mapboxgl.Map({
     maxZoom: 20
 });
 
-// Add zoom buttons (optional)
-map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+// --- INTERACTIVITY UPDATES TO ALIGN WITH CIVIC GREEN MAP ---
 
-// Disable scroll zoom (optional—tablet friendly)
-map.scrollZoom.disable();
+// 1. ENABLE Scroll Zoom: Allows mouse wheel zoom, matching the Civic Green Map.
+map.scrollZoom.enable();
 
-// Allow pinch zoom on tablet (recommended)
-map.touchZoomRotate.enable();
+// 2. CONFIGURE Granular Zoom Buttons:
+// Create a new NavigationControl instance and explicitly set zoomStep to 0.1, 
+// matching the Civic Green Map's finest stable granularity.
+const granularNav = new mapboxgl.NavigationControl({
+    visualizePitch: true,
+    zoomStep: 0.1 
+});
+
+// Add the configured controls to the top-right corner.
+map.addControl(granularNav, 'top-right');
+
+// 3. PRESERVE Mobile/Tablet Settings: Touch zoom and rotation remains enabled.
+map.touchZoomRotate.enable(); 
+
 </script>
 
 </body>
 </html>
+```eof
